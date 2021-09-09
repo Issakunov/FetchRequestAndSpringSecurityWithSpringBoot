@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script></head>
+</head>
+<body>
+<div class="container">
+    <table id="user-page-table" class="table table-bordered border-primary">
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td>Surname</td>
+            <td>Password</td>
+            <td>Department</td>
+            <td>Salary</td>
+            <td>Roles</td>
+        </tr>
+    </table>
+</div>
+<script>
+    let url = 'http://localhost:8080/user';
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        let roless = [];
+        data.roles.map(role => {
+            roless.push(role.role);
+        })
+        let obj = `
+        <td>${data.id}</td>
+        <td>${data.name}</td>
+        <td>${data.surname}</td>
+        <td>${data.password}</td>
+        <td>${data.department}</td>
+        <td>${data.salary}</td>
+        <td>${roless}</td>
+        `;
+        let value = document.createElement('tr');
+        value.innerHTML = obj
+        document.getElementById('user-page-table').append(value);
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script></head>
+<style>
+    .login-form {
+        width: 340px;
+        margin: 50px auto;
+    }
+    .login-form form {
+        margin-bottom: 15px;
+        background: #f7f7f7;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+    .login-form h2 {
+        margin: 0 0 15px;
+    }
+    .form-control, .btn {
+        min-height: 38px;
+        border-radius: 2px;
+    }
+    .btn {
+        font-size: 15px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+<form id="create-user">
+    name <input id="name7" type="text">
+    surname <input id="surname7" type="text">
+    password <input id="password7" type="text">
+    department<input id="department7" type="text">
+    salary <input id="salary7" type="text">
+    <div>
+        <input type="checkbox" id="user-role" value="ROLE_USER">
+        <label for="user-role">ROLE_USER</label>
+    </div>
+    <div>
+        <input type="checkbox" id="admin-role" value="ROLE_ADMIN">
+        <label for="admin-role">ROLE_ADMIN</label>
+    </div>
+    <input type="submit" value="Confirm">
+</form>
+<table id="table-id" class="table table-bordered border-primary">
+    <tr>
+        <th> Id </th>
+        <th> Name </th>
+        <th> Surname </th>
+        <th> Password </th>
+        <th> Department </th>
+        <th> Salary </th>
+        <th> Roles </th>
+        <th> Operations</th>
+    </tr>
+</table>
+<div id="create-button"></div>
+<div class="login-form">
+    <form id="update-form">
+    </form>
+</div>
+<script>
+    let url2 = 'http://localhost:8080';
+
+    const  creator = document.getElementById('create-user');
+    creator.addEventListener('submit', async function (event) {
+        window.location.reload(true);
+
+        event.preventDefault();
+        let name = document.getElementById('name7').value;
+        let surname = document.getElementById('surname7').value;
+        let password = document.getElementById('password7').value;
+        let department = document.getElementById('department7').value;
+        let salary = document.getElementById('salary7').value;
+        let arr = [];
+        if (document.getElementById('admin-role').checked) {
+            let adminRole = new Object();
+            adminRole.id = 2;
+            arr.push(adminRole);
+        }
+        if (document.getElementById('user-role').checked) {
+            let userRole = new Object();
+            userRole.id = 1;
+            arr.push(userRole);
+        }
+        window.location.reload(true);
+        let response = await fetch(url2 + '/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                surname: surname,
+                password: password,
+                department: department,
+                salary: salary,
+                roles: arr
+            })
+        });
+        let answer = response.json();
+        console.log(answer)
+    })
+
+
+    function deleteUser(id) {
+        window.location.reload(true);
+        fetch(url2 + '/create/' + id, {
+            method: 'DELETE'
+        })
+    }
+    function updateSubmit() {
+        let id = document.getElementById('input-id').value;
+        let name = document.getElementById('input-name').value;
+        let surname = document.getElementById('input-surname').value;
+        let password = document.getElementById('input-password').value;
+        let department = document.getElementById('input-department').value;
+        let salary = document.getElementById('input-salary').value;
+        let arr9 = [];
+        if (document.getElementById('admin-role-id').checked){
+            let adRole = new Object();
+            adRole.id = 2;
+            arr9.push(adRole);
+        }
+        if (document.getElementById('user-role-id').checked) {
+            let usRole = new Object();
+            usRole.id = 1;
+            arr9.push(usRole)
+        }
+        fetch(url2 + '/create', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: id,
+                name: name,
+                password: password,
+                surname: surname,
+                department: department,
+                salary: salary,
+                roles: arr9
+            })
+        });
+    }
+    function editUser(id) {
+        fetch(url2 + '/create/' + id, {
+            method: 'GET'
+        }).then(rer => rer.json())
+        .then(obj => {
+            let output1 = `
+            <input id="input-id" type="hidden" value="${obj.id}">
+            <input id="input-name" type="text" value="${obj.name}">
+            <input id="input-surname" type="text" value="${obj.surname}">
+            <input id="input-password" type="text" value="${obj.password}">
+            <input id="input-department" type="text" value="${obj.department}">
+            <input id="input-salary" type="text" value="${obj.salary}">
+            <div>
+                <input type="checkbox" id="user-role-id" value="ROLE_USER">
+                <label for="user-role-id">ROLE_USER</label>
+            </div>
+            <div>
+                <input type="checkbox" id="admin-role-id" value="ROLE_ADMIN">
+                <label for="admin-role-id">ROLE_ADMIN</label>
+            </div>
+            <button onclick="updateSubmit()">update</button>
+            `;
+            document.getElementById("update-form").innerHTML = output1;
+        });
+    }
+    fetch(url2)
+        .then(response => response.json())
+        .then(data => {
+
+            data.forEach(function (user){
+                let ro = [];
+                user.roles.map(role1 =>  {
+                    ro.push(role1.role);
+                })
+                let output = `
+                    <td> ${user.id}</td>
+                    <td> ${user.name}</td>
+                    <td> ${user.surname}</td>
+                    <td> ${user.password}</td>
+                    <td> ${user.department}</td>
+                    <td> ${user.salary}</td>
+                    <td> ${ro}</td>
+                    <td>
+                        <button type="button" onclick="deleteUser(${user.id})">Delete</button>
+                        <button type="button" onclick="editUser(${user.id})">Edit</button>
+                    </td>
+                 `;
+                let value1 = document.createElement('tr');
+                value1.innerHTML = output
+                document.getElementById('table-id').append(value1)
+            });
+
+    })
+
+</script>
+</body>
+</html>
