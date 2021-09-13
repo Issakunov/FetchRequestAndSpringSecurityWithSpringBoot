@@ -18,19 +18,23 @@ public class RestControllerApi {
     public User addUser(@RequestBody User user) {
         return userService.saveUser(user);
     }
+
     @GetMapping("/")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+
     @PutMapping("/create")
     public User editUser(@RequestBody User user) {
         return userService.saveUser(user);
     }
+
     @DeleteMapping("/create/{id}")
     public String deleteMapping(@PathVariable int id) {
         userService.deleteUserById(id);
         return "The user was deleted";
     }
+
     @GetMapping("/create/{id}")
     public User getUserById(@PathVariable("id") int id) {
         return userService.getUserById(id);
