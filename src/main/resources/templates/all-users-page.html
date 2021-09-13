@@ -19,10 +19,6 @@
     .login-form h2 {
         margin: 0 0 15px;
     }
-    .form-control, .btn {
-        min-height: 38px;
-        border-radius: 2px;
-    }
     .btn {
         font-size: 15px;
         font-weight: bold;
@@ -44,9 +40,9 @@
         <input type="checkbox" id="admin-role" value="ROLE_ADMIN">
         <label for="admin-role">ROLE_ADMIN</label>
     </div>
-    <input type="submit" value="Create">
+    <button type="submit" class="btn btn-primary">Create</button>
 </form>
-<table id="table-id" class="table table-bordered border-primary">
+<table id="table-id" class="table table-success table-striped">
     <tr>
         <th> Id </th>
         <th> Name </th>
@@ -69,7 +65,6 @@
 
     const  creator = document.getElementById('create-user');
     creator.addEventListener('submit', async function (event) {
-        window.location.reload(true);
 
         event.preventDefault();
         let name = document.getElementById('name7').value;
@@ -88,7 +83,6 @@
             userRole.id = 1;
             arr.push(userRole);
         }
-        window.location.reload(true);
         let response = await fetch(url2 + '/create', {
             method: 'POST',
             headers: {
@@ -103,16 +97,17 @@
                 roles: arr
             })
         });
+        window.location.reload(true);
         let answer = response.json();
         console.log(answer)
     })
 
 
     function deleteUser(id) {
-        window.location.reload(true);
         fetch(url2 + '/create/' + id, {
             method: 'DELETE'
         })
+        window.location.reload(true);
     }
     function updateSubmit() {
         let id = document.getElementById('input-id').value;
@@ -147,6 +142,7 @@
                 roles: arr9
             })
         });
+        window.location.reload(true);
     }
     function editUser(id) {
         fetch(url2 + '/create/' + id, {
@@ -168,7 +164,7 @@
                 <input type="checkbox" id="admin-role-id" value="ROLE_ADMIN">
                 <label for="admin-role-id">ROLE_ADMIN</label>
             </div>
-            <button onclick="updateSubmit()">update</button>
+            <button type="button" onclick="updateSubmit()" class="btn btn-success">Update</button>
             `;
             document.getElementById("update-form").innerHTML = output1;
         });
@@ -191,8 +187,8 @@
                     <td> ${user.salary}</td>
                     <td> ${ro}</td>
                     <td>
-                        <button type="button" onclick="deleteUser(${user.id})">Delete</button>
-                        <button type="button" onclick="editUser(${user.id})">Edit</button>
+                        <button type="button" onclick="deleteUser(${user.id})" class="btn btn-primary active">Delete</button>
+                        <button type="button" onclick="editUser(${user.id})" class="btn btn-primary active">Edit</button>
                     </td>
                  `;
                 let value1 = document.createElement('tr');
