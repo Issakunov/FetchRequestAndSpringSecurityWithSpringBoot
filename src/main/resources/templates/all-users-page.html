@@ -104,10 +104,10 @@
 
 
     function deleteUser(id) {
+        window.location.reload(true);
         fetch(url2 + '/create/' + id, {
             method: 'DELETE'
         })
-        window.location.reload(true);
     }
     function updateSubmit() {
         let id = document.getElementById('input-id').value;
