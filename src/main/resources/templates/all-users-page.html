@@ -26,22 +26,24 @@
 </style>
 </head>
 <body>
-<form id="create-user">
-    name <input id="name7" type="text">
-    surname <input id="surname7" type="text">
-    password <input id="password7" type="text">
-    department<input id="department7" type="text">
-    salary <input id="salary7" type="text">
-    <div>
-        <input type="checkbox" id="user-role" value="ROLE_USER">
-        <label for="user-role">ROLE_USER</label>
-    </div>
-    <div>
-        <input type="checkbox" id="admin-role" value="ROLE_ADMIN">
+<div class="login-form">
+    <form id="create-user">
+        <input id="name7" type="text">name
+        <input id="surname7" type="text">surname
+        <input id="password7" type="text">password
+        <input id="department7" type="text">department
+        <input id="salary7" type="text">salary
+        <div>
+            <input type="checkbox" id="user-role" value="ROLE_USER">
+            <label for="user-role">ROLE_USER</label>
+        </div>
+        <div>
+            <input type="checkbox" id="admin-role" value="ROLE_ADMIN">
         <label for="admin-role">ROLE_ADMIN</label>
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
+</div>
 <table id="table-id" class="table table-success table-striped">
     <tr>
         <th> Id </th>
@@ -56,8 +58,7 @@
 </table>
 <div id="create-button"></div>
 <div class="login-form">
-    <form id="update-form">
-    </form>
+    <div id="update-user-id"></div>
 </div>
 <a href="/logout"><button type="button" class="btn btn-info">Logout</button></a>
 <script>
@@ -150,6 +151,7 @@
         }).then(rer => rer.json())
         .then(obj => {
             let output1 = `
+<form id="update-form">
             <input id="input-id" type="hidden" value="${obj.id}">
             <input id="input-name" type="text" value="${obj.name}">
             <input id="input-surname" type="text" value="${obj.surname}">
@@ -165,8 +167,8 @@
                 <label for="admin-role-id">ROLE_ADMIN</label>
             </div>
             <button type="button" onclick="updateSubmit()" class="btn btn-success">Update</button>
-            `;
-            document.getElementById("update-form").innerHTML = output1;
+            </form>`;
+            document.getElementById("update-user-id").innerHTML = output1;
         });
     }
     fetch(url2)
